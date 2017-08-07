@@ -6,10 +6,10 @@ import startup.Player;
 /**
  * Created by lingd on 8/4/17.
  */
-public class ZombieCard extends TextCard {
+public class SchrodingerCard extends TextCard {
 
-    public ZombieCard(){
-        super("Zombie Cat", "Text", "ommmmmnoooomm");
+    public SchrodingerCard(){
+        super("Schrodinger's Cat", "Text", "am i?");
     }
 
     public void played(Player[] p){}
