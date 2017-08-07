@@ -8,9 +8,7 @@ import cards.Card;
 public abstract class TextCard extends Card{
 
     public TextCard(String name, String type, String text){
-        super(name, type, text);
+        super(name, type, text, true);
     }
-
-    public void steal(){}
 
 }
