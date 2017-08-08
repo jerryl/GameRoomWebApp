@@ -21,12 +21,13 @@ public class PlayTest {
         ArrayList<String> names = new ArrayList<>();
         names.add("Dennis");
         names.add("Jerry");
-        Game g = new Game(2, names);
+        names.add("Mike");
+        Game g = new Game(3, names);
 
         int in;
         Scanner sc = new Scanner(System.in);
 
-        addBombs(true, g);
+        addBombs(false, g);
 
         boolean turns = true;
         while(turns){
@@ -37,7 +38,7 @@ public class PlayTest {
             }
 
             System.out.println("");
-            System.out.println("0: end turn and draw a card. 1-x: play that card.");
+            System.out.println("0: end turn and draw a card. 1-x: play that card. Put '00' in between two numbers to play multiple cards (eg. 1003004).");
 
             in  = sc.nextInt();
             if(in == 0){
@@ -58,6 +59,66 @@ public class PlayTest {
                 System.out.println(g.getPlayers().get(0).getId() + " WINS!!!!");
             }
 
+            if(in > 1000){
+                String conv = Integer.toString(in);
+
+                String one = String.valueOf(conv.charAt(0));
+                String two = String.valueOf(conv.charAt(conv.length()-1));
+                Card o = curr.getHand().get(Integer.parseInt(one)-1);
+                Card t = curr.getHand().get(Integer.parseInt(two)-1);
+
+                if(in < 10000) {
+                    if (g.verifySelectedCards(new String[]{
+                            o.getName(),
+                            t.getName()
+                    }) == 2) {
+                        System.out.println("Select a player to target: ");
+                        int count = 1;
+                        for (Player curr : g.getPlayers()) {
+                            System.out.print(count + ": " + curr.getId() + " ");
+                            count++;
+                        }
+
+                        int targ = sc.nextInt();
+                        if (targ <= g.getPlayers().size() && targ > 0) {
+                            o.stealRandom(new Player[]{
+                                    curr,
+                                    g.getPlayers().get(targ - 1)
+                            }, o.getName());
+                        }
+                    }
+                }
+                else{
+                    String three = String.valueOf(conv.charAt(3));
+                    Card thr = curr.getHand().get(Integer.parseInt(three)-1);
+
+                    if (g.verifySelectedCards(new String[]{
+                            o.getName(),
+                            t.getName(),
+                            thr.getName()
+                    }) == 3) {
+                        System.out.println("Select a player to target: ");
+                        int count = 1;
+                        for (Player curr : g.getPlayers()) {
+                            System.out.print(count + ": " + curr.getId() + " ");
+                            count++;
+                        }
+
+                        int targ = sc.nextInt() - 1;
+                        if (targ < g.getPlayers().size() && targ >= 0) {
+                            System.out.println("Name a specific card to steal.");
+                            String targetString = sc.next();
+                            o.stealSpecific(new Player[]{
+                                    curr,
+                                    g.getPlayers().get(targ)
+                            }, o.getName(), targetString);
+                        }
+                    }
+                }
+
+
+            }
+
         }
     }
 
@@ -76,6 +137,30 @@ public class PlayTest {
             System.out.print(c + ", ");
         }
         System.out.println("");
+    }
 
+    public static int[] favorPlayed(Game g){
+        Scanner sc = new Scanner(System.in);
+        int[] re = new int[2];
+        int count = 1;
+
+        System.out.println("Select a player to target: ");
+        for(Player curr: g.getPlayers()){
+            System.out.print(count + ": " + curr.getId() +" ");
+            count++;
+        }
+
+        int target = sc.nextInt();
+        re[0] = target-1;
+        System.out.println("");
+        System.out.println("Targeted player, select a card to give: ");
+        System.out.println("Your hand, from 1-x");
+        for(Card c: g.getPlayers().get(target-1).getHand()){
+            System.out.print(c.getName()+ " // ");
+        }
+        System.out.println("");
+        re[1] = sc.nextInt() - 1;
+
+        return re;
     }
 }
