@@ -51,7 +51,7 @@ public class Game {
             deck.add(new SkipCard());
             deck.add(new FutureCard());
             deck.add(new SchrodingerCard());
-
+            deck.add(new AttackCard());
         }
         Collections.shuffle(deck);
     }

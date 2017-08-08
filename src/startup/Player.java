@@ -15,12 +15,14 @@ public class Player {
     private String id;
     private ArrayList<Card> deck;
     private Game g;
+    private boolean attacked;
 
     public Player(String name, Game g){
         hand = new ArrayList<Card>();
         this.deck = g.getDeck();
         this.id = name;
         this.g = g;
+        attacked = false;
         initHand();
     }
 
@@ -50,7 +52,12 @@ public class Player {
                     System.out.println("Kitten encountered and defused.");
                     ExplodeCard ec = new ExplodeCard();
                     deck.add(0, ec);
-                    g.setActivePlayer(g.getActivePlayer()+1);
+                    if(!attacked) {
+                        g.setActivePlayer(g.getActivePlayer() + 1);
+                    }
+                    else{
+                        attacked = false;
+                    }
                     break;
                 }
             }
@@ -61,7 +68,12 @@ public class Player {
         }
         else{
             hand.add(top);
-            g.setActivePlayer(g.getActivePlayer()+1);
+            if(!attacked) {
+                g.setActivePlayer(g.getActivePlayer() + 1);
+            }
+            else{
+                attacked = false;
+            }
         }
 
         if(g.getActivePlayer() >= g.getPlayers().size()){
@@ -80,4 +92,8 @@ public class Player {
     public Game getGame(){ return g; }
 
     public String getId(){ return id; }
+
+    public void setAttacked(boolean t){ attacked = t; }
+
+    public boolean getAttacked(){ return attacked; }
 }

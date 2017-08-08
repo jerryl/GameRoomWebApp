@@ -38,7 +38,7 @@ public class PlayTest {
             }
 
             System.out.println("");
-            System.out.println("0: end turn and draw a card. 1-x: play that card. Put '00' in between two numbers to play multiple cards (eg. 1003004).");
+            System.out.println("0: end turn and draw a card. 1-x: play that card. Put '00' in between numbers to play multiple cards (eg. 1003004).");
 
             in  = sc.nextInt();
             if(in == 0){
